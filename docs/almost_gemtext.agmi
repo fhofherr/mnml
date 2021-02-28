@@ -1,0 +1,182 @@
+# Almost Gemtext
+
+The `mnml` site generator uses an input format that is almost Gemtext
+[1]. Almost Gemtext is a slightly changed version of Gemtext which the
+author of `mnml` finds a little easier to use. At the same time all
+Gemtext documents are also valid Almost Gemtext documents, which `mnml`
+can process just the same.
+
+=> gemini://gemini.circumlunar.space/docs/gemtext.gmi [1] Gemtext
+
+This document specifies Almost Gemtext by describing the differences to
+Gemtext. At the same time the source of this document serves as an
+example of a valid Almost Gemtext document.
+
+## Modelines
+
+Some editors allow the use of so called modelines, basically a line at
+the beginning or the end of the document, which allow to set various
+editor settings. While not widely used this feature sometimes comes in
+handy. Therefore the Almost Gemtext parser ignores the first and the
+last line of a document if it starts with an HTML open comment symbol
+(`<!--`). The trailing close comment symbol (`-->`) is optional and not
+taken into account.
+
+```
+<!-- vim: set tw=72 ft=markdown: -->
+```
+
+Additionally all empty lines immediately following a modeline at the
+beginning of the document are dropped from the output.
+
+## Headings
+
+A line starting with one or more pound `#` characters is treated as a
+heading line. The amount of `#` characters at the beginning of the line
+defines the level of the heading.
+
+Gemtext only allows three levels of headings. The same holds true for
+Almost Gemtext. Authors however may choose to use up to 6 `#` characters
+for their headings. This makes it easier to convert Almost Gemtext to
+Markdown.
+
+`mnml` does copies heading lines verbatim to the output when converting
+from Almost Gemtext to another format.
+
+## Paragraphs and Lines
+
+The biggest difference between Gemtext and Almost Gemtext is the
+treatment of regular text lines. While Gemtext requires to use one line
+per paragraph, Almost Gemtext allows for line breaks within a paragraph
+of text. The following text is valid Almost Gemtext but not valid
+Gemtext:
+
+```
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+nec dui rutrum, imperdiet risus sed, tempus elit. Ut sed dignissim mi.
+Morbi maximus arcu at pulvinar euismod. Curabitur lacinia rhoncus metus,
+sit amet tempor tortor faucibus ut. Sed efficitur dictum diam vitae
+tristique.
+
+Donec suscipit volutpat justo eu maximus. Fusce imperdiet sapien et
+sapien lacinia vehicula. Quisque auctor felis eget dictum efficitur.
+Donec ex risus, luctus in fringilla eu, vulputate tempor magna. Nunc at
+sapien gravida elit bibendum finibus.
+```
+
+### Conversion to Gemtext
+
+When converting from Almost Gemtext to Gemtext `mnml` joins all lines
+separated by a single newline character (`\n`). Two or more consecutive
+newline characters mark the end of a paragraph. `mnml` copies them
+verbatim to the resulting Gemtext.
+
+### Conversion to GPH
+
+tbd
+
+## Quotes
+
+Almost Gemtext lines containing a quote start with a `>` character, just
+like in Gemtext. Quotes that are to long to fit in one line may be
+broken up by inserting a single newline character followed by `>`. The
+following is an example of a valid Almost Gemtext quote spanning
+multiple lines:
+
+```
+> This is the first line of the quote,
+> and this its second.
+```
+
+### Conversion to Gemtext
+
+Just as with paragraphs `mnml` joins lines separated by `\n>` together.
+All intermediate `>` characters of the resulting line are removed. Only
+the very first `>` is retained.
+
+### Conversion to GPH
+
+tbd
+
+## Pre-formatted Text
+
+A line containing only three backtick characters marks the beginning of
+pre-formatted text. The next line containing only three backtick
+characters marks its end. This the same for Almost Gemtext and Gemtext.
+
+In addition Almost Gemtext treats any lines indented by four space
+characters or a single tab `\t` character as a line of pre-formatted
+text. The first non-blank line that is not indented ends the block of
+pre-formatted text.
+
+```
+    This is pre-formatted in Almost Gemtext.
+
+    This line is part of the same block of pre-formatted text in Almost
+    Gemtext.
+```
+
+### Conversion to Gemtext
+
+Pre-formatted text identified by backtick charactes is copied to the
+output verbatim.
+
+Pre-formatted text that is identified by indentation gets its
+identifying indentation, i.e. four spaces or a single tab, removed. It
+is then wrapped in backticks and copied to the output.
+
+### Conversion to GPH
+
+tbd
+
+## Lists and List Items
+
+Lists in Almost Gemtext must have a paragraph of their own. This means
+the document must contain at least two newline characters before the first
+list item and at least two new line characters after the last list item.
+Alternatively the document may end with the last list item. In this case
+the terminating newline characters are optional.
+
+```
+Paragraph before the list.
+
+* First list item
+* Second list item
+
+Paragraph after the list.
+```
+
+As with Gemtext list items in Almost Gemtext are identified with a
+single leading asterisk (`*`) character. In contrast to Gemtext lists in
+Almost Gemtext may span multiple lines. In this case all additional
+lines of the list item must be indented by two spaces.
+
+```
+* This is a valid Almost Gemtext list item.
+  It spans multiple lines. All lines following the first line of the list
+  item must be indented by two spaces.
+```
+
+The following is also a valid Almost Gemtext list item. Albeit one the
+author of this document finds less pleasing to look at:
+
+```
+*A list item spanning multiple lines.
+  The indent by two spaces is a hard requirement. This may lead to ugly
+  looking list items if the * is not followed by a space.
+```
+
+## Links
+
+Links in Almost Gemtext work the same as links in Gemtext. A line
+starting with `=>` identifies a link. Inline links are not available.
+
+### Conversion to Gemtext
+
+`mnml` copies the links verbatim from Almost Gemtext to Gemtext.
+
+### Conversion to GPH
+
+tbd
+
+<!-- vim: set tw=72 ft=markdown: -->
