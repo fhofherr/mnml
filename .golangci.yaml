@@ -1,0 +1,52 @@
+---
+linters-settings:
+  errcheck:
+    exclude: .errcheck_exclude.txt
+  exhaustive:
+    default-signifies-exhaustive: true
+  lll:
+    line-length: 120
+    tab-width: 4
+  misspell:
+    locale: "US"
+  revive:
+    exported: true
+    import-shadowing: true
+    indent-error-flow: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - dupl
+    - errcheck
+    - exhaustive
+    - gocritic
+    - goimports
+    - golint
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - prealloc
+    - revive
+    - scopelint
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+
+issues:
+  include:
+    - EXC0002  # disable excluding of issues about comments from golint
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gosec
