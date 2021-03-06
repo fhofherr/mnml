@@ -61,6 +61,11 @@ type Token struct {
 	Text string    // Token text as read from the input.
 }
 
+// IsZero returns true if this Token equals the zero value of the Token type.
+func (tok Token) IsZero() bool {
+	return tok.Type == tokenTypeUnknown && tok.Text == ""
+}
+
 // Scanner scans a single Almost Gemtext document and creates a stream of
 // tokens for further processing.
 //

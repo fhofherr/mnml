@@ -1,0 +1,3 @@
+* This is a valid Almost Gemtext list item. It spans multiple lines. All lines following the first line of the list item must be indented by two spaces.
+* A list item may have parts that are indented by more spaces.     Those additional spaces are copied to the output verbatim and usually look out of place.
+* This is a valid, but ugly looking list item spanning multiple lines. In the output it will look better.

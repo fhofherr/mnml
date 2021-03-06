@@ -1,0 +1,7 @@
+	Another possibility is to pre-format text by indenting it with a single
+	tab character.
+
+		Additional tabs or spaces after the first tab are copied to the
+	    output verbatim. Mixing tabs and spaces may look funny.
+
+    It is also possible to switch between tabs and spaces for the first indent.

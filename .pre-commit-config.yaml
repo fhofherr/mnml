@@ -1,4 +1,5 @@
 ---
+exclude: '.*\.golden'
 repos:
   - repo: https://github.com/fhofherr/pre-commit-hooks
     rev: b05be8c8dc8287d10b425182871c5190b1fae276

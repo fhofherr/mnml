@@ -1,0 +1,3 @@
+This is a simple Almost Gemtext file consisting of a modeline and two paragraphs. The most notable feature about the two paragraphs is that each of them consists of multiple lines.
+
+Additionally the modeline at the top, as well as any blank lines that immediately follow the modeline, are omitted from the output.
