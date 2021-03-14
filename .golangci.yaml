@@ -50,3 +50,7 @@ issues:
     - path: _test\.go
       linters:
         - gosec
+    - path: tools.go
+      linters:
+        - golint
+        - revive
