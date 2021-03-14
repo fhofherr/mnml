@@ -1,0 +1,44 @@
+---
+before:
+  hooks:
+    - make generate
+    - make lint
+builds:
+  - id: mnml
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+    main: ./cmd/mnml
+    binary: bin/mmnl
+    ldflags:
+      - -s -w -X internal.version.Version={{.Version}} -X internal.version.Commit={{.Commit}} -X internal.version.date={{.Date}}
+archives:
+  - id: mnml
+    builds:
+      - mnml
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
+    wrap_in_directory: true
+    files:
+      - LICENSE
+      - README.md
+      - docs/*
+checksum:
+  name_template: checksums.txt
+release:
+  github:
+    owner: fhofherr
+    name: mnml
+  draft: true
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

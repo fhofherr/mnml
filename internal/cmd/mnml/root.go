@@ -9,6 +9,7 @@ func New() *cobra.Command {
 		Short: "A minimalistic Gemini and Gopher site generator.",
 	}
 	rootCmd.AddCommand(newAGMI2GMICmd())
+	rootCmd.AddCommand(newVersionCmd())
 
 	return rootCmd
 }
