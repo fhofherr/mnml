@@ -1,13 +1,15 @@
 ---
-exclude: '.*\.golden'
 repos:
   - repo: https://github.com/fhofherr/pre-commit-hooks
-    rev: b05be8c8dc8287d10b425182871c5190b1fae276
+    rev: 8a2da40b96a7cf53c308820556ccea146775124f
     hooks:
       - id: go-mod-tidy
+      - id: revive
       - id: shellcheck
+      - id: make
+        args: [ "generate" ]
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.37.1
+    rev: v1.39.0
     hooks:
       - id: golangci-lint
   - repo: https://github.com/pre-commit/pre-commit-hooks
