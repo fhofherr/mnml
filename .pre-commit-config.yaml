@@ -19,4 +19,5 @@ repos:
       - id: check-merge-conflict
       - id: check-yaml
       - id: end-of-file-fixer
+        exclude: "^.*\\.golden$"
       - id: trailing-whitespace
