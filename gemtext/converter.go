@@ -43,10 +43,22 @@ func fmtAGMIToken(c *agmi.Converter, cur, next agmi.Token) {
 	case agmi.TokenTypeBulletPoint:
 		c.Write("* ")
 		c.State = fmtListItem
+	case agmi.TokenTypeLinkMod:
+		c.Write("=> ")
+		c.State = fmtLink
 	case agmi.TokenTypeLineBreak:
 		joinLines(c, next)
 	default:
 		c.Write(cur.Text)
+	}
+}
+
+func fmtLink(c *agmi.Converter, cur, next agmi.Token) {
+	c.Write(cur.Text)
+	if cur.Type == agmi.TokenTypeLineBreak || cur.Type == agmi.TokenTypeParSep {
+		// The link ended. Return to fmtAGMIToken.
+		c.State = fmtAGMIToken
+		return
 	}
 }
 
@@ -58,6 +70,7 @@ func fmtListItem(c *agmi.Converter, cur, next agmi.Token) {
 		}
 	case agmi.TokenTypeParSep:
 		// End of list
+		c.Write("\n\n")
 		c.State = fmtAGMIToken
 	case agmi.TokenTypeLineBreak:
 		if next.Type == agmi.TokenTypeBulletPoint {
