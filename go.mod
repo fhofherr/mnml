@@ -3,6 +3,7 @@ module github.com/fhofherr/mnml
 go 1.16
 
 require (
+	github.com/fhofherr/toolmgr v0.1.0
 	github.com/goreleaser/goreleaser v0.159.0
 	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.7.0

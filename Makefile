@@ -2,10 +2,8 @@ GO ?= go
 PRE_COMMIT ?= pre-commit
 
 TOOLS_GO := tools.go
-TOOL_PKGS := $(shell awk '/[[:space:]]+_[[:space:]]+"[^"]+"/ { gsub(/"/, "", $$2); print $$2}' $(TOOLS_GO))
 TOOLS_DIR := .tools
 TOOLS_BIN_DIR := $(TOOLS_DIR)/bin
-TOOL_BINARIES := $(patsubst %,$(TOOLS_BIN_DIR)/%,$(notdir $(TOOL_PKGS)))
 
 CMD_DIR := cmd
 BIN_DIR := bin
@@ -21,7 +19,7 @@ CMD_BINARIES := $(patsubst $(CMD_DIR)/%/main.go,$(BIN_DIR)/%,$(MAIN_GO_FILES))
 build: $(CMD_BINARIES) ## Build all command binaries
 
 .PHONY: generate
-generate: $(TOOL_BINARIES) $(GO_FILES) ## Run Go generators.
+generate: $(GO_FILES) $(TOOLS_BIN_DIR) ## Run Go generators.
 	PATH=$(abspath ./$(TOOLS_BIN_DIR)):$(PATH) $(GO) generate ./...
 
 .PHONY: lint
@@ -51,8 +49,12 @@ help: ## Show this help.
 		printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 	}' $(MAKEFILE_LIST)
 
-$(BIN_DIR)/%: $(CMD_DIR)/%/main.go $(GO_FILES)
-	$(GO) build -o $@ ./$(dir $<)
+## Dummy target to allow depending on all tools
+$(TOOLS_BIN_DIR): $(TOOLS_BIN_DIR)/toolmgr
 
 $(TOOLS_BIN_DIR)/%: $(TOOLS_GO)
-	GOBIN=$(abspath ./$(TOOLS_BIN_DIR)) $(GO) install $(shell grep '_ $%' $(TOOLS_GO) | cut -d'"' -f2)
+	GOBIN=$(abspath ./$(TOOLS_BIN_DIR)) $(GO) install github.com/fhofherr/toolmgr
+	$(TOOLS_BIN_DIR)/toolmgr -bin-dir $(TOOLS_BIN_DIR) -tools-go $(TOOLS_GO)
+
+$(BIN_DIR)/%: $(CMD_DIR)/%/main.go $(GO_FILES)
+	$(GO) build -o $@ ./$(dir $<)
